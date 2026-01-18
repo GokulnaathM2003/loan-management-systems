@@ -1,0 +1,15 @@
+package com.example.lms_loan_service.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.example.lms_loan_service.model.Loan;
+
+@Repository
+public interface LoanRepository extends JpaRepository<Loan, Long> {
+
+    // READ ONLY – fetch loans for a customer/user
+    List<Loan> findByUserId(Long userId);
+}

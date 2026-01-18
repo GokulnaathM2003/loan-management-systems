@@ -1,0 +1,94 @@
+package com.lms.auth_service.service;
+
+import com.lms.auth_service.dto.LoginRequest;
+import com.lms.auth_service.dto.LoginResponse;
+import com.lms.auth_service.dto.RegisterRequest;
+import com.lms.auth_service.entity.Customer;
+import com.lms.auth_service.entity.UserMaster;
+import com.lms.auth_service.exception.CustomerNotFoundException;
+import com.lms.auth_service.exception.UserAlreadyExistsException;
+import com.lms.auth_service.repository.CustomerRepository;
+import com.lms.auth_service.repository.UserRepository;
+import com.lms.auth_service.security.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AuthServiceImpl implements AuthService {
+
+    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    // ================= REGISTER =================
+    @Override
+    public void register(RegisterRequest request) {
+
+        // 1️⃣ Validate Customer exists
+        Customer customer = customerRepository.findById(request.getCustomerId())
+                .orElseThrow(() ->
+                        new CustomerNotFoundException("Customer ID not found")
+                );
+
+        // 2️⃣ Validate username uniqueness
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new UserAlreadyExistsException("Username already exists");
+        }
+
+        // 3️⃣ Validate email uniqueness
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserAlreadyExistsException("Email already exists");
+        }
+
+        // 4️⃣ Create User
+        UserMaster user = new UserMaster();
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("USER");
+        user.setCustomer(customer); // 🔥 CRITICAL MAPPING
+
+        // 5️⃣ Save user
+        userRepository.save(user);
+    }
+
+    // ================= LOGIN =================
+    @Override
+    public LoginResponse login(LoginRequest request) {
+
+        // 1️⃣ Authenticate credentials
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsernameOrEmail(),
+                        request.getPassword()
+                )
+        );
+
+        // 2️⃣ Fetch user
+        UserMaster user = userRepository
+                .findByUsernameOrEmail(
+                        request.getUsernameOrEmail(),
+                        request.getUsernameOrEmail()
+                )
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // 3️⃣ Generate JWT (username + role only)
+        String token = jwtUtil.generateToken(
+                user.getUsername(),
+                user.getRole()
+        );
+
+        // 4️⃣ Return response
+        return new LoginResponse(
+                token,
+                user.getUsername(),
+                user.getRole()
+        );
+    }
+}

@@ -1,0 +1,68 @@
+.summary-card {
+  cursor: pointer;
+  border-radius: 14px;
+  transition: all 0.25s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
+}
+
+.loan-card {
+  cursor: pointer;
+  border-radius: 16px;
+  transition: all 0.25s ease;
+}
+
+.loan-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.12);
+}
+
+.loan-header {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.metric-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* ===================== */
+/* LOAN HEADER UI */
+/* ===================== */
+.loan-header-advanced {
+  background: linear-gradient(135deg, #1f2933, #111827);
+  color: #ffffff;
+  padding: 24px 28px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.loan-header-advanced h3 {
+  letter-spacing: 0.3px;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-pill.active {
+  background-color: #16a34a;
+  color: #ffffff;
+}
+
+.status-pill.closed {
+  background-color: #6b7280;
+  color: #ffffff;
+}
+
+

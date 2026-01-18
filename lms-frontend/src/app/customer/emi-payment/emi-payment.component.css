@@ -1,0 +1,9 @@
+.loan-card {
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.loan-card.selected {
+  border: 2px solid #198754;
+  background: #e9f7ef;
+}

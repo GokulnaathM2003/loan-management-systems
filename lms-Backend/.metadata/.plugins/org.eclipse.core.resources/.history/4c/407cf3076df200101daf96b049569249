@@ -1,0 +1,98 @@
+package com.bank.paymentservice.service;
+
+import com.bank.paymentservice.client.LoanServiceClient;
+import com.bank.paymentservice.model.ForeclosureRequest;
+import com.bank.paymentservice.repository.ForeclosureRequestRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+
+@Service
+public class ForeclosureService {
+
+    private final ForeclosureRequestRepository repo;
+    private final LoanServiceClient loanClient;
+
+    public ForeclosureService(ForeclosureRequestRepository repo,
+                              LoanServiceClient loanClient) {
+        this.repo = repo;
+        this.loanClient = loanClient;
+    }
+
+    // =====================================================
+    // STEP 1 — USER REQUESTS FORECLOSURE
+    // =====================================================
+    @Transactional
+    public String requestForeclosure(Long loanId) {
+
+        // ✅ Prevent duplicate PENDING requests (LATEST ONLY)
+        repo.findTopByLoanIdAndStatusOrderByRequestDateDesc(loanId, "PENDING")
+            .ifPresent(req -> {
+                throw new RuntimeException(
+                    "Foreclosure request already pending for this loan"
+                );
+            });
+
+        // ✅ FIRST update LOAN-SERVICE
+        loanClient.requestForeclosure(loanId);
+
+        // ✅ THEN save request in PAYMENT DB
+        ForeclosureRequest req = new ForeclosureRequest();
+        req.setLoanId(loanId);
+        req.setStatus("PENDING");
+        req.setRequestDate(LocalDate.now());
+
+        repo.save(req);
+
+        return "Foreclosure request submitted";
+    }
+
+    // =====================================================
+    // STEP 2 — ADMIN APPROVES FORECLOSURE
+    // =====================================================
+    @Transactional
+    public Double approveByLoanId(Long loanId) {
+
+        ForeclosureRequest req = repo
+            .findTopByLoanIdAndStatusOrderByRequestDateDesc(loanId, "PENDING")
+            .orElseThrow(() ->
+                new RuntimeException("No pending foreclosure request found")
+            );
+
+        Double remainingAmount =
+                loanClient.getRemainingBalance(loanId);
+
+        req.setStatus("APPROVED");
+        req.setApprovedAmount(remainingAmount);
+
+        repo.save(req);
+
+        return remainingAmount;
+    }
+
+    // =====================================================
+    // STEP 3 — USER PAYS FORECLOSURE AMOUNT
+    // =====================================================
+    @Transactional
+    public String payForeclosure(Long requestId) {
+
+        ForeclosureRequest req = repo.findById(requestId)
+                .orElseThrow(() ->
+                        new RuntimeException("Foreclosure request not found"));
+
+        if (!"APPROVED".equals(req.getStatus())) {
+            throw new RuntimeException("Foreclosure not approved yet");
+        }
+
+        // Close loan in LOAN-SERVICE
+        loanClient.closeLoan(req.getLoanId());
+
+        req.setStatus("PAID");
+        req.setPaymentDate(LocalDate.now());
+
+        repo.save(req);
+
+        return "Loan foreclosed successfully";
+    }
+}

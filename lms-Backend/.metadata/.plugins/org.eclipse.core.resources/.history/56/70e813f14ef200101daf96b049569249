@@ -1,0 +1,54 @@
+package com.example.lms_loan_service.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.lms_loan_service.client.PaymentServiceClient;
+import com.example.lms_loan_service.model.ForeclosureStatus;
+import com.example.lms_loan_service.model.Loan;
+import com.example.lms_loan_service.model.LoanStatus;
+import com.example.lms_loan_service.repository.LoanRepository;
+
+@Service
+public class ForeclosureApprovalService {
+
+    private final LoanRepository loanRepository;
+    private final PaymentServiceClient paymentServiceClient; // 🔥 ADD THIS
+
+    public ForeclosureApprovalService(
+            LoanRepository loanRepository,
+            PaymentServiceClient paymentServiceClient) {
+        this.loanRepository = loanRepository;
+        this.paymentServiceClient = paymentServiceClient;
+    }
+
+    @Transactional
+    public Double approveForeclosure(Long loanId) {
+
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+
+        // 🔐 Loan must be ACTIVE
+        if (loan.getStatus() != LoanStatus.ACTIVE) {
+            throw new RuntimeException("Loan is not active");
+        }
+
+        // 🔐 Foreclosure must be REQUESTED
+        if (loan.getForeclosureStatus() != ForeclosureStatus.REQUESTED) {
+            throw new RuntimeException("Foreclosure not requested for this loan");
+        }
+
+        // ✅ Approve foreclosure in LOAN DB
+        loan.setForeclosureStatus(ForeclosureStatus.APPROVED);
+        loanRepository.save(loan);
+
+        // ✅ Approved amount = remaining principal
+        Double approvedAmount = loan.getRemainingPrincipal();
+
+        // 🔥 SYNC APPROVED AMOUNT TO PAYMENT‑SERVICE
+        paymentServiceClient.updateApprovedAmount(loanId, approvedAmount);
+
+        // ✅ Return amount to admin / UI
+        return approvedAmount;
+    }
+}

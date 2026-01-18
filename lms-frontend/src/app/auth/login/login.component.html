@@ -1,0 +1,53 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Login</h2>
+    <p class="subtitle">Access your LMS account</p>
+ 
+    <form [formGroup]="form" (ngSubmit)="login()">
+ 
+      <!-- Username / Email -->
+      <div class="form-group">
+        <label>Username or Email</label>
+        <input
+          type="text"
+          formControlName="usernameOrEmail"
+          placeholder="Enter username or email"
+        />
+ 
+        <small class="error"
+          *ngIf="form.get('usernameOrEmail')?.touched &&
+                 form.get('usernameOrEmail')?.invalid">
+          Username or Email is required
+        </small>
+      </div>
+ 
+      <!-- Password -->
+      <div class="form-group">
+        <label>Password</label>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Enter password"
+        />
+ 
+        <small class="error"
+          *ngIf="form.get('password')?.touched &&
+                 form.get('password')?.invalid">
+          Password is required
+        </small>
+      </div>
+ 
+      <!-- Submit -->
+      <button type="submit" class="btn-primary">
+        Login
+      </button>
+    </form>
+ 
+    <p class="link-text">
+      New user?
+      <a routerLink="/register">Create account</a>
+    </p>
+  </div>
+</div>
+ 
+ 

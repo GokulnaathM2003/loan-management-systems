@@ -1,0 +1,33 @@
+package com.bank.paymentservice.controller;
+
+import com.bank.paymentservice.service.ForeclosureService;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/foreclosure")
+public class ForeclosureController {
+
+    private final ForeclosureService service;
+
+    public ForeclosureController(ForeclosureService service) {
+        this.service = service;
+    }
+
+    // USER sends foreclosure request
+    @PostMapping("/request")
+    public String request(@RequestParam Long loanId) {
+        return service.requestForeclosure(loanId);
+    }
+
+    // ADMIN approves and system calculates remaining balance
+    @PutMapping("/approve")
+    public Double approve(@RequestParam Long requestId) {
+        return service.approveRequest(requestId);
+    }
+
+    // USER pays foreclosure amount
+    @PostMapping("/pay")
+    public String pay(@RequestParam Long requestId) {
+        return service.payForeclosure(requestId);
+    }
+}

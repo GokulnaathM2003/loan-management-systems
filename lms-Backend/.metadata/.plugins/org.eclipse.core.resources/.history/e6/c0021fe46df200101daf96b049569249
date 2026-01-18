@@ -1,0 +1,46 @@
+package com.bank.paymentservice.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@FeignClient(
+    name = "loan-service",
+    url = "http://localhost:8084"
+)
+public interface LoanServiceClient {
+
+    // ================= EMI =================
+    @PutMapping("/loans/{loanId}/emi")
+    Double applyEmi(
+            @PathVariable Long loanId,
+            @RequestParam Double amount
+    );
+
+    // ================= PARTIAL PREPAYMENT =================
+    @PutMapping("/loans/{loanId}/partial-prepayment")
+    Double applyPrepayment(
+            @PathVariable Long loanId,
+            @RequestParam Double amount
+    );
+
+    // ================= FORECLOSURE REQUEST (🔥 REQUIRED) =================
+    @PutMapping("/loans/{loanId}/foreclosure/request")
+    void requestForeclosure(
+            @PathVariable Long loanId
+    );
+
+    // ================= CLOSE LOAN =================
+    @PutMapping("/loans/{loanId}/close")
+    String closeLoan(
+            @PathVariable Long loanId
+    );
+
+    // ================= BALANCE =================
+    @GetMapping("/loans/{loanId}/balance")
+    Double getRemainingBalance(
+            @PathVariable Long loanId
+    );
+}

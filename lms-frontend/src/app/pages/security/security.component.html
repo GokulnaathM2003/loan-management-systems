@@ -1,0 +1,23 @@
+<div class="card">
+
+  <!-- CARD HEADER WITH TABS -->
+  <div class="card-header space-between">
+    <div class="header-left">
+      <div class="icon purple">🔒</div>
+      <div>
+        <h2>Security</h2>
+        <p>Manage your password</p>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <a routerLink="/customer/settings/profile">Profile</a>
+      <a routerLink="/customer/settings/security" routerLinkActive="active">Security</a>
+    </div>
+  </div>
+
+  <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+    <!-- SAME PASSWORD FORM -->
+  </form>
+
+</div>

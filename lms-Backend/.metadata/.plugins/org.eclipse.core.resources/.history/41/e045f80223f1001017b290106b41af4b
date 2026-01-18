@@ -1,0 +1,46 @@
+package com.example.lms_loan_service.service;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.lms_loan_service.model.Loan;
+import com.example.lms_loan_service.model.RepaymentSchedule;
+import com.example.lms_loan_service.model.RepaymentStatus;
+import com.example.lms_loan_service.repository.RepaymentScheduleRepository;
+
+@Service
+public class RepaymentScheduleService {
+
+    private final RepaymentScheduleRepository repaymentRepo;
+
+    public RepaymentScheduleService(RepaymentScheduleRepository repaymentRepo) {
+        this.repaymentRepo = repaymentRepo;
+    }
+
+    // CALLED WHEN LOAN EXISTS
+    public void generateSchedule(Loan loan) {
+
+        List<RepaymentSchedule> schedules = new ArrayList<>();
+
+        LocalDate startDate = loan.getStartDate();
+        int tenure = loan.getTenureMonths();
+        double emi = loan.getEmiAmount();
+
+        for (int i = 1; i <= tenure; i++) {
+
+            RepaymentSchedule schedule = new RepaymentSchedule();
+            schedule.setLoanId(loan.getLoanId());
+            schedule.setInstallmentNo(i);
+            schedule.setDueDate(startDate.plusMonths(i));
+            schedule.setEmiAmount(emi);
+            schedule.setStatus(RepaymentStatus.PENDING);
+
+            schedules.add(schedule);
+        }
+
+        repaymentRepo.saveAll(schedules);
+    }
+}

@@ -1,0 +1,5 @@
+package com.example.lms_loan_service.controller;
+
+public class RepaymentScheduleController {
+
+}

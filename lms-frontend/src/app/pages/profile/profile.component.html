@@ -1,0 +1,91 @@
+<!-- =======================
+     PROFILE CARD
+======================= -->
+<div class="card">
+
+  <div class="card-header">
+    <div class="icon blue">👤</div>
+    <div>
+      <h2>Profile Information</h2>
+      <p>Update your personal details</p>
+    </div>
+  </div>
+
+  <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+
+    <div class="grid">
+      <div class="field">
+        <label>Full Name</label>
+        <input
+          type="text"
+          formControlName="fullName"
+          placeholder="Enter full name"
+        />
+
+        <small class="error"
+          *ngIf="profileForm.get('fullName')?.touched &&
+                 profileForm.get('fullName')?.invalid">
+          Full name is required
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Customer ID</label>
+        <input type="text" [value]="customerId" disabled />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Email Address</label>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Enter email address"
+      />
+
+      <small class="error"
+        *ngIf="profileForm.get('email')?.touched &&
+               profileForm.get('email')?.invalid">
+        Enter a valid email
+      </small>
+    </div>
+
+    <div class="field">
+      <label>Phone Number</label>
+      <input
+        type="text"
+        formControlName="phone"
+        placeholder="Enter phone number"
+      />
+
+      <small class="error"
+        *ngIf="profileForm.get('phone')?.touched &&
+               profileForm.get('phone')?.invalid">
+        Phone number must be 10 digits
+      </small>
+    </div>
+
+    <button class="primary-btn" type="submit">
+      Save Changes
+    </button>
+
+  </form>
+</div>
+
+<!-- =======================
+     SECURITY CARD
+======================= -->
+<div class="card">
+
+  <div class="card-header">
+    <div class="icon purple">🔒</div>
+    <div>
+      <h2>Security</h2>
+      <p>Manage your password and security settings</p>
+    </div>
+  </div>
+
+  <!-- 🔥 SECURITY COMPONENT EMBEDDED -->
+  <app-security></app-security>
+
+</div>

@@ -1,0 +1,17 @@
+package com.example.lms_loan_service.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.lms_loan_service.model.RepaymentSchedule;
+
+public interface RepaymentScheduleRepository
+        extends JpaRepository<RepaymentSchedule, Long> {
+
+    // ✅ To prevent duplicate schedule generation
+    boolean existsByLoanId(Long loanId);
+
+    // ✅ REQUIRED for GET /loans/{loanId}/repayment-schedule
+    List<RepaymentSchedule> findByLoanId(Long loanId);
+}

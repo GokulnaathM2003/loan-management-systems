@@ -1,0 +1,50 @@
+<div class="customer-layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+
+    <h5 class="logo">LoanMS</h5>
+
+    <nav class="menu">
+      <a routerLink="/customer/dashboard" routerLinkActive="active">
+        Dashboard
+      </a>
+
+      <a routerLink="/customer/loan-details" routerLinkActive="active">
+        Loan Details
+      </a>
+
+      <a routerLink="/customer/emi-payment" routerLinkActive="active">
+        Pay EMI
+      </a>
+
+      <a routerLink="/customer/transactions" routerLinkActive="active">
+        Payment History
+      </a>
+
+      <a routerLink="/customer/prepayment" routerLinkActive="active">
+        Prepayment
+      </a>
+
+      <a routerLink="/customer/foreclosure" routerLinkActive="active">
+        Foreclosure
+      </a>
+
+      <!-- ✅ SETTINGS LINK (IMPORTANT) -->
+      <a routerLink="/customer/settings" routerLinkActive="active">
+        Settings
+      </a>
+    </nav>
+
+    <div class="logout">
+      <a routerLink="/login">Logout</a>
+    </div>
+
+  </aside>
+
+  <!-- RIGHT CONTENT -->
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+
+</div>

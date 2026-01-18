@@ -1,0 +1,37 @@
+package com.bank.paymentservice.service;
+
+import com.bank.paymentservice.client.LoanServiceClient;
+import com.bank.paymentservice.model.PartialPrepayment;
+import com.bank.paymentservice.repository.PartialPrepaymentRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+
+@Service
+public class PaymentService {
+
+    private final LoanServiceClient loanClient;
+    private final PartialPrepaymentRepository repo;
+
+    public PaymentService(LoanServiceClient loanClient,
+                          PartialPrepaymentRepository repo) {
+        this.loanClient = loanClient;
+        this.repo = repo;
+    }
+
+    public String doPartialPrepayment(Long loanId, Double amount) {
+
+        // 1) Call Loan Service
+        Double remaining = loanClient.applyPrepayment(loanId, amount);
+
+        // 2) Save Payment
+        PartialPrepayment p = new PartialPrepayment();
+        p.setLoanId(loanId);
+        p.setPrepaymentAmount(amount);
+        p.setPrepaymentDate(LocalDate.now());
+        p.setRemainingPrincipal(remaining);
+        repo.save(p);
+
+        return "Prepayment successful. Remaining principal = " + remaining;
+    }
+}

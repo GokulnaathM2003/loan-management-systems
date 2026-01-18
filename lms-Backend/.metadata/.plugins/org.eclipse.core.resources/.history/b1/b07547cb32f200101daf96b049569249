@@ -1,0 +1,46 @@
+package com.example.lms_loan_service.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.lms_loan_service.model.Loan;
+import com.example.lms_loan_service.model.LoanStatus;
+import com.example.lms_loan_service.repository.LoanRepository;
+
+@Service
+public class LoanEmiService {
+
+    private final LoanRepository loanRepository;
+
+    public LoanEmiService(LoanRepository loanRepository) {
+        this.loanRepository = loanRepository;
+    }
+
+    public Double applyEmi(Long loanId, Double amount) {
+
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new RuntimeException("Loan not found"));
+
+        if (loan.getStatus() != LoanStatus.ACTIVE) {
+            throw new RuntimeException("Loan not active");
+        }
+
+        if (amount <= 0) {
+            throw new RuntimeException("Invalid EMI amount");
+        }
+
+        if (amount > loan.getRemainingPrincipal()) {
+            throw new RuntimeException("Amount exceeds balance");
+        }
+
+        double updated = loan.getRemainingPrincipal() - amount;
+        loan.setRemainingPrincipal(updated);
+
+        if (updated == 0) {
+            loan.setStatus(LoanStatus.CLOSED);
+        }
+
+        loanRepository.save(loan);
+
+        return updated;
+    }
+}

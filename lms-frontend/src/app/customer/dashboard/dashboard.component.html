@@ -1,0 +1,80 @@
+<div class="dashboard-page">
+
+  <!-- PAGE TITLE -->
+  <h2 class="page-title">Dashboard</h2>
+  <p class="page-subtitle">
+    Manage your loans and payments
+  </p>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-cards">
+
+    <div class="summary-card">
+      <p class="label">Total Active Loans</p>
+      <h3 class="value">{{ summary.totalActive }}</h3>
+    </div>
+
+    <div class="summary-card">
+      <p class="label">Total Outstanding</p>
+      <h3 class="value">₹ {{ summary.totalOutstanding }}</h3>
+    </div>
+
+    <div class="summary-card">
+      <p class="label">Next EMI Due</p>
+      <h3 class="value">{{ summary.nextEmiDate }}</h3>
+    </div>
+
+    <div class="summary-card">
+      <p class="label">Total Monthly EMI</p>
+      <h3 class="value">₹ {{ summary.totalEmi }}</h3>
+    </div>
+
+  </div>
+
+  <!-- MY LOANS SECTION -->
+  <h3 class="section-title">My Loans</h3>
+  <p class="section-subtitle">
+    Click on a loan to view details
+  </p>
+
+  <div class="loan-cards">
+
+    <div
+      class="loan-card"
+      *ngFor="let loan of loans"
+      (click)="openLoan(loan.loanId)"
+    >
+
+      <!-- HEADER -->
+      <div class="loan-header">
+        <h4>{{ loan.loanType }} LOAN</h4>
+        <span
+          class="status"
+          [class.active]="loan.status === 'ACTIVE'"
+          [class.closed]="loan.status === 'CLOSED'"
+        >
+          {{ loan.status }}
+        </span>
+      </div>
+
+      <!-- LOAN DETAILS -->
+      <div class="loan-info">
+        <p>Loan Amount</p>
+        <strong>₹ {{ loan.loanAmount }}</strong>
+      </div>
+
+      <div class="loan-info">
+        <p>Outstanding</p>
+        <strong>₹ {{ loan.outstandingAmount }}</strong>
+      </div>
+
+      <div class="loan-info">
+        <p>EMI</p>
+        <strong>₹ {{ loan.emiAmount }}</strong>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

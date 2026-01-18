@@ -1,0 +1,21 @@
+package com.bank.paymentservice.controller;
+
+import com.bank.paymentservice.service.EmiPaymentService;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/payments")
+public class EmiPaymentController {
+
+    private final EmiPaymentService service;
+
+    public EmiPaymentController(EmiPaymentService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/emi")
+    public String payEmi(@RequestParam Long loanId,
+                         @RequestParam Double amount) {
+        return service.payEmi(loanId, amount);
+    }
+}

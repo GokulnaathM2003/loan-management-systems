@@ -1,0 +1,71 @@
+<div class="container">
+
+  <h3>What is Loan Foreclosure?</h3>
+  <p class="info">
+    Foreclosure allows you to close your loan before tenure ends by paying
+    the remaining outstanding amount in full.
+  </p>
+
+  <!-- AMOUNT BREAKDOWN -->
+  <div class="card">
+    <h4>Foreclosure Amount Breakdown</h4>
+
+    <div class="row">
+      <span>Outstanding Principal</span>
+      <span>₹{{ outstandingPrincipal }}</span>
+    </div>
+
+    <div class="row">
+      <span>Accrued Interest</span>
+      <span>₹{{ accruedInterest }}</span>
+    </div>
+
+    <div class="row">
+      <span>Foreclosure Charges (2%)</span>
+      <span>₹{{ foreclosureCharges }}</span>
+    </div>
+
+    <div class="row">
+      <span>Processing Fee</span>
+      <span>₹{{ processingFee }}</span>
+    </div>
+
+    <div class="total">
+      Total Foreclosure Amount: ₹{{ totalAmount }}
+    </div>
+
+    <div class="success">
+      ✔ By foreclosing now, you will save interest in future payments
+    </div>
+  </div>
+
+  <!-- REQUEST DETAILS -->
+  <div class="card">
+    <h4>Foreclosure Request Details</h4>
+
+    <label>Loan Account Number</label>
+    <input type="text" [value]="loanAccountNumber" disabled />
+
+    <label>Reason for Foreclosure</label>
+    <textarea [(ngModel)]="reason"></textarea>
+
+    <label>Preferred Payment Date</label>
+    <input type="date" [(ngModel)]="paymentDate" />
+
+    <label class="checkbox">
+      <input type="checkbox" [(ngModel)]="agreed" />
+      I agree to pay the foreclosure amount and accept admin approval
+    </label>
+
+    <p class="note">
+      ⚠ Your foreclosure request will be reviewed by our team.
+      Approval usually takes 2–3 business days.
+    </p>
+
+    <div class="actions">
+      <button class="submit" (click)="submitRequest()">Submit Request</button>
+      <button class="cancel" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+
+</div>

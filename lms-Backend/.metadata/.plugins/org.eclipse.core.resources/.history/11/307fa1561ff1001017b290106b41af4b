@@ -1,0 +1,33 @@
+package com.example.lms_loan_service.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.lms_loan_service.exception.InvalidLoanStateException;
+import com.example.lms_loan_service.exception.LoanNotFoundException;
+import com.example.lms_loan_service.model.Loan;
+import com.example.lms_loan_service.model.LoanStatus;
+import com.example.lms_loan_service.repository.LoanRepository;
+
+@Service
+public class ForeclosureApprovalService {
+
+    private final LoanRepository loanRepository;
+
+    public ForeclosureApprovalService(LoanRepository loanRepository) {
+        this.loanRepository = loanRepository;
+    }
+
+    public void approveForeclosure(Long loanId) {
+
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new LoanNotFoundException(loanId));
+
+        if (loan.getStatus() != LoanStatus.FORECLOSURE_REQUESTED) {
+            throw new InvalidLoanStateException(
+                    "Foreclosure can be approved only if status is FORECLOSURE_REQUESTED");
+        }
+
+        loan.setStatus(LoanStatus.CLOSED);
+        loanRepository.save(loan);
+    }
+}

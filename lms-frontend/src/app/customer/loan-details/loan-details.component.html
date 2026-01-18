@@ -1,0 +1,57 @@
+<div class="container mt-4">
+
+  <h3 class="fw-bold mb-4">My Loans</h3>
+
+  <!-- LOADING -->
+  <div *ngIf="loading" class="alert alert-secondary">
+    Loading loan details...
+  </div>
+
+  <!-- LOAN CARDS -->
+  <div class="row g-4" *ngIf="!loading && filteredLoans.length > 0">
+
+    <div class="col-md-4" *ngFor="let loan of filteredLoans">
+      <div class="card loan-card p-3 shadow-sm">
+
+        <!-- LOAN TYPE + STATUS -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="fw-bold mb-0">
+            {{ loan.loanType }} LOAN
+          </h5>
+
+          <span class="badge"
+            [ngClass]="loan.status === 'ACTIVE'
+              ? 'bg-success'
+              : 'bg-secondary'">
+            {{ loan.status }}
+          </span>
+        </div>
+
+        <!-- DETAILS -->
+        <p class="mb-1">
+          Loan Amount:
+          <strong>₹ {{ loan.amount }}</strong>
+        </p>
+
+        <p class="mb-1">
+          Outstanding:
+          <strong>₹ {{ loan.outstanding }}</strong>
+        </p>
+
+        <p class="mb-0">
+          EMI:
+          <strong>₹ {{ loan.emi }}</strong>
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NO DATA -->
+  <div *ngIf="!loading && filteredLoans.length === 0"
+       class="alert alert-info">
+    No loans found.
+  </div>
+
+</div>

@@ -1,0 +1,14 @@
+package com.example.lms_loan_service.dto;
+
+import com.example.lms_loan_service.model.LoanStatus;
+
+public class LoanResponseDto {
+
+    private Long loanId;
+    private String loanType;
+    private Double principalAmount;
+    private Double remainingPrincipal;
+    private LoanStatus status;
+
+    // getters & setters
+}

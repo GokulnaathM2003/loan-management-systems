@@ -1,0 +1,33 @@
+package com.example.lms_loan_service.model;
+
+import java.time.LocalDate;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "repayment_schedule")
+public class RepaymentSchedule {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long scheduleId;
+
+    @Column(nullable = false)
+    private Long loanId;
+
+    @Column(nullable = false)
+    private Integer installmentNo;
+
+    @Column(nullable = false)
+    private LocalDate dueDate;
+
+    @Column(nullable = false)
+    private Double emiAmount;
+
+    private LocalDate paidDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RepaymentStatus status;
+
+    // getters & setters
+}

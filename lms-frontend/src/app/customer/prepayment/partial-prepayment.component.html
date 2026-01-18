@@ -1,0 +1,82 @@
+<div class="page">
+
+  <h2>Partial Prepayment</h2>
+
+  <!-- LOAN SUMMARY -->
+  <div class="card summary">
+    <div>
+      <p>Outstanding Principal</p>
+      <b>₹{{ outstandingPrincipal }}</b>
+    </div>
+    <div>
+      <p>Current EMI</p>
+      <b>₹{{ currentEmi }}</b>
+    </div>
+    <div>
+      <p>Remaining Tenure</p>
+      <b>{{ remainingTenure }} months</b>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- PREPAYMENT FORM -->
+    <div class="card">
+      <h3>Prepayment Details</h3>
+
+      <input
+        type="number"
+        formControlName="amount"
+        [formGroup]="prepaymentForm"
+      />
+
+      <small class="error"
+        *ngIf="prepaymentForm.get('amount')?.touched && prepaymentForm.get('amount')?.invalid">
+        Minimum prepayment amount is ₹1,000
+      </small>
+
+      <div class="quick-btns">
+        <button type="button" (click)="addAmount(25000)">+25,000</button>
+        <button type="button" (click)="addAmount(50000)">+50,000</button>
+        <button type="button" (click)="addAmount(100000)">+1,00,000</button>
+      </div>
+
+      <h4>Choose Option</h4>
+
+      <div
+        class="option"
+        [class.active]="selectedOption === 'REDUCE_EMI'"
+        (click)="selectOption('REDUCE_EMI')">
+        <b>Reduce EMI</b>
+        <p>Keep tenure same</p>
+      </div>
+
+      <div
+        class="option"
+        [class.active]="selectedOption === 'REDUCE_TENURE'"
+        (click)="selectOption('REDUCE_TENURE')">
+        <b>Reduce Tenure</b>
+        <p>Finish loan faster</p>
+      </div>
+    </div>
+
+    <!-- IMPACT SUMMARY -->
+    <div class="card">
+      <h3>Impact Summary</h3>
+
+      <p>New Outstanding: ₹{{ newOutstanding }}</p>
+      <p>New EMI: ₹{{ newEmi }}</p>
+      <p>New Tenure: {{ newTenure }} months</p>
+
+      <hr />
+
+      <p class="green">
+        Total Interest Saved: ₹{{ interestSaved }}
+      </p>
+
+      <button class="primary" (click)="proceed()">Proceed to Payment</button>
+      <button class="secondary" (click)="cancel()">Cancel</button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,29 @@
+package com.bank.paymentservice.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.*;
+
+@FeignClient(
+        name = "loan-service",
+        url = "http://localhost:8084"   // 🔥 must match loan-service port
+)
+public interface LoanServiceClient {
+
+    // ================= EMI =================
+    @PutMapping("/loans/{loanId}/emi")
+    Double applyEmi(@PathVariable("loanId") Long loanId,
+                    @RequestParam("amount") Double amount);
+
+    // ================= PREPAYMENT =================
+    @PutMapping("/loans/{loanId}/prepayment")
+    Double applyPrepayment(@PathVariable("loanId") Long loanId,
+                            @RequestParam("amount") Double amount);
+
+    // ================= CLOSE LOAN =================
+    @PutMapping("/loans/{loanId}/close")
+    String closeLoan(@PathVariable("loanId") Long loanId);
+
+    // ================= BALANCE =================
+    @GetMapping("/loans/{loanId}/balance")
+    Double getRemainingBalance(@PathVariable("loanId") Long loanId);
+}

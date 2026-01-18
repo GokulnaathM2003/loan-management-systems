@@ -1,0 +1,180 @@
+/* Container */
+.transaction-container {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+ 
+/* Table */
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+ 
+/* Header */
+.transaction-table thead th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+ 
+/* Rows */
+.transaction-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+ 
+.transaction-table tbody tr:hover {
+  background: #f8fafc;
+}
+ 
+.transaction-table tbody td {
+  padding: 18px 0;
+  font-size: 14px;
+  color: #1e293b;
+}
+ 
+/* Transaction ID */
+.tx-id {
+  font-weight: 500;
+  color: #334155;
+}
+ 
+/* Type Pills */
+.type-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+ 
+.type-pill.emi {
+  background: #eef6ff;
+  color: #2563eb;
+}
+ 
+.type-pill.prepay {
+  background: #f5ebff;
+  color: #9333ea;
+}
+ 
+/* Payment Method */
+.muted {
+  color: #475569;
+}
+ 
+/* Amount */
+.amount {
+  font-weight: 600;
+}
+ 
+/* Status */
+.status-pill {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+ 
+.status-pill.success {
+  background: #ecfdf5;
+  color: #15803d;
+}
+ 
+/* Download */
+.download-link {
+  color: #2563eb;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+ 
+.download-link:hover {
+  text-decoration: underline;
+}
+ 
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: #dc2626;
+  font-weight: 600;
+}
+/* Filters Container */
+.filters {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+ 
+/* Input, Select, Date */
+.filter-input,
+.filter-select,
+.filter-date {
+  height: 38px;
+  padding: 0 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #1e293b;
+  outline: none;
+  transition: all 0.2s ease;
+}
+ 
+/* Hover & Focus */
+.filter-input:focus,
+.filter-select:focus,
+.filter-date:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+ 
+/* Input widths */
+.filter-input {
+  min-width: 180px;
+}
+ 
+.filter-select {
+  min-width: 140px;
+}
+ 
+.filter-date {
+  min-width: 140px;
+}
+ 
+/* Reset Button (same color as Download) */
+.reset-btn {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 8px;
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+ 
+/* Hover effect */
+.reset-btn:hover {
+  background: #1d4ed8;
+}
+ 
+/* Click effect */
+.reset-btn:active {
+  transform: scale(0.97);
+}
+ 
+ 

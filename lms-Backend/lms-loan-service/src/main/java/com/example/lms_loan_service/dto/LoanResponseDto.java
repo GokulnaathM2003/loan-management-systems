@@ -1,0 +1,67 @@
+package com.example.lms_loan_service.dto;
+
+import com.example.lms_loan_service.model.ForeclosureStatus;
+import com.example.lms_loan_service.model.LoanStatus;
+
+public class LoanResponseDto {
+
+    private Long loanId;
+    private String loanType;
+    private Double principalAmount;
+    private Double remainingPrincipal;
+    private LoanStatus status;
+
+    // 🔥 ADD THIS FIELD
+    private ForeclosureStatus foreclosureStatus;
+
+    // -------- Getters & Setters --------
+
+    public Long getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
+    }
+
+    public Double getPrincipalAmount() {
+        return principalAmount;
+    }
+
+    public void setPrincipalAmount(Double principalAmount) {
+        this.principalAmount = principalAmount;
+    }
+
+    public Double getRemainingPrincipal() {
+        return remainingPrincipal;
+    }
+
+    public void setRemainingPrincipal(Double remainingPrincipal) {
+        this.remainingPrincipal = remainingPrincipal;
+    }
+
+    public LoanStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(LoanStatus status) {
+        this.status = status;
+    }
+
+    // 🔥 Getter & Setter for foreclosureStatus
+    public ForeclosureStatus getForeclosureStatus() {
+        return foreclosureStatus;
+    }
+
+    public void setForeclosureStatus(ForeclosureStatus foreclosureStatus) {
+        this.foreclosureStatus = foreclosureStatus;
+    }
+}

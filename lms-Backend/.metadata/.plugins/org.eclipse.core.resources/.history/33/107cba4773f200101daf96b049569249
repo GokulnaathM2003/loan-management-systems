@@ -1,0 +1,33 @@
+package com.example.lms_loan_service.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.example.lms_loan_service.dto.LoanResponseDto;
+import com.example.lms_loan_service.service.LoanService;
+
+@RestController
+@RequestMapping("/loans")
+public class LoanController {
+
+    private final LoanService loanService;
+
+    public LoanController(LoanService loanService) {
+        this.loanService = loanService;
+    }
+
+    // ================= USER =================
+    // View loans of logged-in customer
+    @GetMapping("/my")
+    public List<LoanResponseDto> getMyLoans(
+            @RequestHeader("customerId") Long customerId) {
+        return loanService.getLoansByCustomerId(customerId);
+    }
+
+    // ================= FORECLOSURE REQUEST (🔥 MISSING FIX) =================
+    @PutMapping("/{loanId}/foreclosure/request")
+    public void requestForeclosure(@PathVariable Long loanId) {
+        loanService.requestForeclosure(loanId);
+    }
+}

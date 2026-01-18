@@ -1,0 +1,89 @@
+<form [formGroup]="emiForm">
+
+  <!-- SELECT LOAN -->
+  <div class="card mb-3">
+    <div class="card-header fw-bold">Select Loan Account</div>
+    <div class="card-body">
+      <div
+        class="loan-card mb-2 p-3"
+        *ngFor="let loan of loans"
+        (click)="selectLoan(loan)"
+        [class.selected]="loan.loanId === selectedLoan?.loanId"
+      >
+        <b>{{ loan.loanType }}</b> ({{ loan.loanId }})
+        <div>EMI: ₹{{ loan.emiAmount }}</div>
+        <div>Due: {{ loan.dueDate }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT SUMMARY -->
+  <div class="card mb-3">
+    <div class="card-header fw-bold">Payment Summary</div>
+    <div class="card-body">
+      <div>Loan ID: {{ selectedLoan?.loanId }}</div>
+      <div>Type: {{ selectedLoan?.loanType }}</div>
+      <div>Principal: ₹{{ selectedLoan?.principalAmount }}</div>
+      <div>Interest: ₹{{ selectedLoan?.interestAmount }}</div>
+      <div>Fee: ₹{{ selectedLoan?.processingFee }}</div>
+      <hr>
+      <b>Total: ₹{{ selectedLoan?.emiAmount }}</b>
+    </div>
+  </div>
+
+  <!-- PAYMENT METHOD -->
+  <div class="card mb-3">
+    <div class="card-header fw-bold">Select Payment Method</div>
+    <div class="card-body">
+      <button type="button" class="btn me-2"
+        [class.btn-primary]="selectedPayment==='CARD'"
+        (click)="selectPayment('CARD')">Card</button>
+
+      <button type="button" class="btn"
+        [class.btn-primary]="selectedPayment==='UPI'"
+        (click)="selectPayment('UPI')">UPI</button>
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card mb-3" *ngIf="selectedPayment==='CARD'">
+    <div class="card-body">
+      <input class="form-control mb-1" placeholder="Card Number" formControlName="cardNumber">
+      <small class="text-danger" *ngIf="emiForm.get('cardNumber')?.touched && emiForm.get('cardNumber')?.invalid">
+        Card number must be at least 10 digits
+      </small>
+
+      <input type="month" class="form-control mb-2" formControlName="expiry">
+
+      <input class="form-control mb-1" placeholder="CVV" formControlName="cvv">
+      <small class="text-danger" *ngIf="emiForm.get('cvv')?.touched && emiForm.get('cvv')?.invalid">
+        CVV must be 3 digits
+      </small>
+
+      <input class="form-control mb-2" placeholder="Cardholder Name" formControlName="cardName">
+    </div>
+  </div>
+
+  <!-- UPI -->
+  <div class="card mb-3" *ngIf="selectedPayment==='UPI'">
+    <div class="card-body">
+      <input class="form-control mb-1" placeholder="UPI ID" formControlName="upiId">
+      <small class="text-danger" *ngIf="emiForm.get('upiId')?.touched && emiForm.get('upiId')?.invalid">
+        Enter valid UPI ID
+      </small>
+      <div class="border p-3 mt-2 text-center">QR Scanner Area</div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="d-flex gap-2">
+    <button type="button" class="btn btn-success w-100" (click)="payEmi()">
+      Pay ₹{{ selectedLoan?.emiAmount }}
+    </button>
+
+    <button type="button" class="btn btn-outline-secondary w-100" (click)="cancelPayment()">
+      Cancel
+    </button>
+  </div>
+
+</form>

@@ -1,0 +1,30 @@
+package com.example.lms_loan_service.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.lms_loan_service.dto.LoanResponseDto;
+import com.example.lms_loan_service.service.LoanService;
+
+@RestController
+@RequestMapping("/loans")
+public class LoanController {
+
+    private final LoanService loanService;
+
+    public LoanController(LoanService loanService) {
+        this.loanService = loanService;
+    }
+
+    // CUSTOMER: view his existing loans
+    @GetMapping("/my")
+    public List<LoanResponseDto> getMyLoans(
+            @RequestHeader("customerId") Long customerId) {
+
+        return loanService.getLoansByCustomer(customerId);
+    }
+}

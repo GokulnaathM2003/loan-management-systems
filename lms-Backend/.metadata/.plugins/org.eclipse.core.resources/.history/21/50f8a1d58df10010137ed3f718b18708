@@ -1,0 +1,5 @@
+spring.application.name=paymentservice
+server.port=8085
+
+# IMPORTANT
+spring.config.import=optional:configserver:http://localhost:8888

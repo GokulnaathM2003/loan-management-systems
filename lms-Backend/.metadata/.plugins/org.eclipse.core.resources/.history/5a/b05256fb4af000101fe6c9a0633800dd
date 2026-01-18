@@ -1,0 +1,29 @@
+package com.example.lms_loan_service.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "customer")
+public class Customer {
+
+    @Id
+    @Column(name = "customer_id")
+    private Long customerId;
+
+    @Column(name = "customer_name")
+    private String customerName;
+
+    // getters & setters
+    public Long getCustomerId() { 
+    	return customerId; }
+    public void setCustomerId(Long customerId) {
+    	this.customerId = customerId; 
+    	}
+
+    public String getCustomerName() {
+    	return customerName; 
+    	}
+    public void setCustomerName(String customerName) {
+    	this.customerName = customerName;
+    	}
+}

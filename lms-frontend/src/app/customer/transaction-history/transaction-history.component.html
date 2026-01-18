@@ -1,0 +1,102 @@
+<h2 class="page-title">Transaction History</h2>
+
+<!-- FILTERS -->
+<div class="filters">
+  <input
+    type="text"
+    class="filter-input"
+    placeholder="Search Loan ID"
+    [(ngModel)]="searchText"
+    (input)="loadTransactions()"
+  />
+
+  <select
+    class="filter-select"
+    [(ngModel)]="type"
+    (change)="loadTransactions()"
+  >
+    <option value="">All Types</option>
+    <option value="EMI">EMI</option>
+    <option value="PREPAYMENT">Prepayment</option>
+    <option value="FORECLOSURE">Foreclosure</option>
+  </select>
+
+  <input
+    type="date"
+    class="filter-date"
+    [(ngModel)]="transactionDate"
+    (change)="loadTransactions()"
+  />
+
+  <button class="reset-btn" (click)="resetFilters()">
+    Reset
+  </button>
+</div>
+
+<!-- EMPTY STATE -->
+<div class="no-data" *ngIf="transactions.length === 0">
+  No transactions found
+</div>
+
+<!-- TABLE -->
+<div class="transaction-container" *ngIf="transactions.length > 0">
+  <table class="transaction-table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Transaction ID</th>
+        <th>Loan ID</th>
+        <th>Type</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Receipt</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let tx of transactions">
+        <td>{{ tx.transactionDate | date:'MMM d, yyyy' }}</td>
+
+        <td class="tx-id">{{ tx.transactionId }}</td>
+
+        <td class="loan-id">{{ tx.loanId }}</td>
+
+        <td>
+          <span
+            class="type-pill"
+            [ngClass]="{
+              'emi': tx.type === 'EMI',
+              'prepay': tx.type === 'PREPAYMENT',
+              'foreclosure': tx.type === 'FORECLOSURE'
+            }"
+          >
+            {{ tx.type }}
+          </span>
+        </td>
+
+        <td class="amount">₹{{ tx.amount | number }}</td>
+
+        <td>
+          <span
+            class="status-pill"
+            [ngClass]="{
+              'success': tx.status === 'SUCCESS',
+              'failed': tx.status === 'FAILED'
+            }"
+          >
+            {{ tx.status }}
+          </span>
+        </td>
+
+        <td>
+          <a
+            class="download-link"
+            (click)="downloadReceipt(tx.transactionId)"
+          >
+            Download
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
